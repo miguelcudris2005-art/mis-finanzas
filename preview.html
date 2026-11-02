@@ -1,0 +1,2627 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Mi Control Financiero</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #f3f4f6;
+
+    color: #1f2937;
+
+}
+
+.contenedor {
+
+    width: 100%;
+    max-width: 1200px;
+
+    margin: auto;
+
+    padding: 20px;
+
+}
+
+
+/* =========================
+   ENCABEZADO
+========================= */
+
+.encabezado {
+
+    background: #111827;
+
+    color: white;
+
+    padding: 28px;
+
+    border-radius: 20px;
+
+    margin-bottom: 20px;
+
+}
+
+.encabezado h1 {
+
+    margin: 0 0 8px 0;
+
+    font-size: 30px;
+
+}
+
+.encabezado p {
+
+    margin: 0;
+
+    color: #d1d5db;
+
+}
+
+
+/* =========================
+   RESUMEN
+========================= */
+
+.resumen {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+
+}
+
+.tarjeta {
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 22px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(0,0,0,0.06);
+
+}
+
+.tarjeta h3 {
+
+    margin: 0 0 12px;
+
+    color: #6b7280;
+
+    font-size: 15px;
+
+}
+
+.tarjeta .numero {
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+}
+
+.tarjeta-ingreso {
+
+    border-left:
+        6px solid #16a34a;
+
+}
+
+.tarjeta-gasto {
+
+    border-left:
+        6px solid #dc2626;
+
+}
+
+.tarjeta-ahorro {
+
+    border-left:
+        6px solid #2563eb;
+
+}
+
+.tarjeta-disponible {
+
+    border-left:
+        6px solid #9333ea;
+
+}
+
+
+/* =========================
+   PANELES
+========================= */
+
+.panel {
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 25px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(0,0,0,0.06);
+
+}
+
+.panel h2 {
+
+    margin-top: 0;
+
+    margin-bottom: 20px;
+
+}
+
+
+/* =========================
+   FORMULARIO
+========================= */
+
+.formulario {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 16px;
+
+}
+
+.campo {
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+.campo label {
+
+    font-weight: bold;
+
+    margin-bottom: 7px;
+
+    font-size: 14px;
+
+}
+
+.campo input,
+.campo select {
+
+    width: 100%;
+
+    padding: 13px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+
+    background: white;
+
+}
+
+.campo input:focus,
+.campo select:focus {
+
+    outline: none;
+
+    border-color: #2563eb;
+
+}
+
+.completo {
+
+    grid-column:
+        span 2;
+
+}
+
+
+/* =========================
+   BOTONES
+========================= */
+
+.botones {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+    flex-wrap: wrap;
+
+}
+
+button {
+
+    border: none;
+
+    border-radius: 10px;
+
+    padding: 13px 18px;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+.btn-guardar {
+
+    background: #111827;
+
+    color: white;
+
+}
+
+.btn-guardar:hover {
+
+    background: #374151;
+
+}
+
+.btn-limpiar {
+
+    background: #e5e7eb;
+
+    color: #111827;
+
+}
+
+.btn-exportar {
+
+    background: #16a34a;
+
+    color: white;
+
+}
+
+.btn-respaldo {
+
+    background: #2563eb;
+
+    color: white;
+
+}
+
+.btn-borrar {
+
+    background: #dc2626;
+
+    color: white;
+
+}
+
+
+/* =========================
+   MENSAJE
+========================= */
+
+.mensaje {
+
+    display: none;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    margin-top: 15px;
+
+    font-weight: bold;
+
+}
+
+.mensaje.exito {
+
+    display: block;
+
+    background: #dcfce7;
+
+    color: #166534;
+
+}
+
+.mensaje.error {
+
+    display: block;
+
+    background: #fee2e2;
+
+    color: #991b1b;
+
+}
+
+
+/* =========================
+   FILTROS
+========================= */
+
+.filtros {
+
+    display: grid;
+
+    grid-template-columns:
+        2fr 1fr 1fr 1fr;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+
+}
+
+.filtros input,
+.filtros select {
+
+    padding: 12px;
+
+    border:
+        1px solid #d1d5db;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+
+}
+
+
+/* =========================
+   TABLA
+========================= */
+
+.tabla {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+}
+
+table {
+
+    width: 100%;
+
+    min-width: 850px;
+
+    border-collapse:
+        collapse;
+
+}
+
+th {
+
+    background: #111827;
+
+    color: white;
+
+    padding: 13px;
+
+    text-align: left;
+
+}
+
+td {
+
+    padding: 13px;
+
+    border-bottom:
+        1px solid #e5e7eb;
+
+}
+
+.tipo {
+
+    display: inline-block;
+
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+}
+
+.ingreso {
+
+    background: #dcfce7;
+
+    color: #166534;
+
+}
+
+.gasto {
+
+    background: #fee2e2;
+
+    color: #991b1b;
+
+}
+
+.ahorro {
+
+    background: #dbeafe;
+
+    color: #1e40af;
+
+}
+
+.valor-ingreso {
+
+    color: #16a34a;
+
+    font-weight: bold;
+
+}
+
+.valor-gasto {
+
+    color: #dc2626;
+
+    font-weight: bold;
+
+}
+
+.valor-ahorro {
+
+    color: #2563eb;
+
+    font-weight: bold;
+
+}
+
+.acciones {
+
+    display: flex;
+
+    gap: 5px;
+
+}
+
+.btn-editar {
+
+    background: #2563eb;
+
+    color: white;
+
+    padding: 7px 10px;
+
+}
+
+.btn-eliminar {
+
+    background: #dc2626;
+
+    color: white;
+
+    padding: 7px 10px;
+
+}
+
+.sin-datos {
+
+    text-align: center;
+
+    color: #6b7280;
+
+    padding: 30px;
+
+}
+
+
+/* =========================
+   META
+========================= */
+
+.meta-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 15px;
+
+}
+
+.barra-fondo {
+
+    height: 15px;
+
+    background: #e5e7eb;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    margin-top: 15px;
+
+}
+
+.barra-progreso {
+
+    height: 100%;
+
+    width: 0%;
+
+    background: #2563eb;
+
+    transition: width .3s;
+
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:800px) {
+
+    .resumen {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+    .formulario {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .completo {
+
+        grid-column:
+            span 1;
+
+    }
+
+    .filtros {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .meta-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+@media(max-width:500px) {
+
+    .contenedor {
+
+        padding: 10px;
+
+    }
+
+    .resumen {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .encabezado h1 {
+
+        font-size: 24px;
+
+    }
+
+    .panel {
+
+        padding: 18px;
+
+    }
+
+    .botones button {
+
+        width: 100%;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="contenedor">
+
+
+<!-- =========================
+     ENCABEZADO
+========================= -->
+
+<div class="encabezado">
+
+    <h1>💰 Mi Control Financiero</h1>
+
+    <p>
+        Controla tus ingresos, gastos y ahorros
+        en un solo lugar.
+    </p>
+
+</div>
+
+
+<!-- =========================
+     RESUMEN
+========================= -->
+
+<div class="resumen">
+
+
+    <div class="tarjeta tarjeta-ingreso">
+
+        <h3>💰 INGRESOS</h3>
+
+        <div
+            class="numero"
+            id="totalIngresos">
+
+            $0
+
+        </div>
+
+    </div>
+
+
+    <div class="tarjeta tarjeta-gasto">
+
+        <h3>💸 GASTOS</h3>
+
+        <div
+            class="numero"
+            id="totalGastos">
+
+            $0
+
+        </div>
+
+    </div>
+
+
+    <div class="tarjeta tarjeta-ahorro">
+
+        <h3>🏦 AHORROS</h3>
+
+        <div
+            class="numero"
+            id="totalAhorros">
+
+            $0
+
+        </div>
+
+    </div>
+
+
+    <div class="tarjeta tarjeta-disponible">
+
+        <h3>📊 DISPONIBLE</h3>
+
+        <div
+            class="numero"
+            id="totalDisponible">
+
+            $0
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     REGISTRAR
+========================= -->
+
+<div class="panel">
+
+    <h2 id="tituloFormulario">
+        ➕ Registrar movimiento
+    </h2>
+
+
+    <div class="formulario">
+
+
+        <div class="campo">
+
+            <label>
+                Tipo de movimiento
+            </label>
+
+            <select id="tipo">
+
+                <option value="">
+                    Seleccionar...
+                </option>
+
+                <option value="Ingreso">
+                    💰 Ingreso
+                </option>
+
+                <option value="Gasto">
+                    💸 Gasto
+                </option>
+
+                <option value="Ahorro">
+                    🏦 Ahorro
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="campo">
+
+            <label>
+                Categoría
+            </label>
+
+            <select id="categoria">
+
+                <option value="">
+                    Seleccionar...
+                </option>
+
+                <option>
+                    Trabajo
+                </option>
+
+                <option>
+                    Negocio
+                </option>
+
+                <option>
+                    Ventas
+                </option>
+
+                <option>
+                    Alimentación
+                </option>
+
+                <option>
+                    Transporte
+                </option>
+
+                <option>
+                    Vivienda
+                </option>
+
+                <option>
+                    Servicios
+                </option>
+
+                <option>
+                    Educación
+                </option>
+
+                <option>
+                    Entretenimiento
+                </option>
+
+                <option>
+                    Compras
+                </option>
+
+                <option>
+                    Familia
+                </option>
+
+                <option>
+                    Deudas
+                </option>
+
+                <option>
+                    Ahorro
+                </option>
+
+                <option>
+                    Inversión
+                </option>
+
+                <option>
+                    Otros
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="campo">
+
+            <label>
+                Valor
+            </label>
+
+            <input
+                type="number"
+                id="valor"
+                placeholder="Ej: 500000"
+                min="1">
+
+        </div>
+
+
+        <div class="campo">
+
+            <label>
+                Descripción
+            </label>
+
+            <input
+                type="text"
+                id="descripcion"
+                placeholder="Ej: Pago recibido">
+
+        </div>
+
+
+        <div class="campo completo">
+
+            <label>
+                Fecha y hora
+            </label>
+
+            <input
+                type="datetime-local"
+                id="fecha">
+
+        </div>
+
+
+    </div>
+
+
+    <div class="botones">
+
+        <button
+            class="btn-guardar"
+            onclick="guardarMovimiento()">
+
+            💾 Guardar movimiento
+
+        </button>
+
+
+        <button
+            class="btn-limpiar"
+            onclick="limpiarFormulario()">
+
+            Limpiar
+
+        </button>
+
+    </div>
+
+
+    <div
+        id="mensaje"
+        class="mensaje">
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     META
+========================= -->
+
+<div class="panel">
+
+    <h2>
+        🎯 Meta de ahorro
+    </h2>
+
+
+    <div class="meta-grid">
+
+
+        <div class="campo">
+
+            <label>
+                Meta de ahorro
+            </label>
+
+            <input
+                type="number"
+                id="metaAhorro"
+                placeholder="Ej: 5000000">
+
+        </div>
+
+
+        <div>
+
+            <label>
+                &nbsp;
+            </label>
+
+            <button
+                class="btn-respaldo"
+                onclick="guardarMeta()">
+
+                Guardar meta
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+    <p id="textoMeta">
+        Ahorro: $0 de $0
+    </p>
+
+
+    <div class="barra-fondo">
+
+        <div
+            id="barraProgreso"
+            class="barra-progreso">
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     HISTORIAL
+========================= -->
+
+<div class="panel">
+
+    <h2>
+        📋 Historial de movimientos
+    </h2>
+
+
+    <div class="filtros">
+
+
+        <input
+            type="text"
+            id="buscar"
+            placeholder="🔎 Buscar..."
+            oninput="mostrarHistorial()">
+
+
+        <select
+            id="filtroTipo"
+            onchange="mostrarHistorial()">
+
+            <option value="">
+                Todos
+            </option>
+
+            <option value="Ingreso">
+                Ingresos
+            </option>
+
+            <option value="Gasto">
+                Gastos
+            </option>
+
+            <option value="Ahorro">
+                Ahorros
+            </option>
+
+        </select>
+
+
+        <input
+            type="date"
+            id="desde"
+            onchange="mostrarHistorial()">
+
+
+        <input
+            type="date"
+            id="hasta"
+            onchange="mostrarHistorial()">
+
+
+    </div>
+
+
+    <div class="tabla">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Fecha
+                    </th>
+
+                    <th>
+                        Hora
+                    </th>
+
+                    <th>
+                        Tipo
+                    </th>
+
+                    <th>
+                        Categoría
+                    </th>
+
+                    <th>
+                        Descripción
+                    </th>
+
+                    <th>
+                        Valor
+                    </th>
+
+                    <th>
+                        Acciones
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody
+                id="historial">
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <div class="botones">
+
+
+        <button
+            class="btn-exportar"
+            onclick="exportarCSV()">
+
+            📊 Exportar CSV
+
+        </button>
+
+
+        <button
+            class="btn-respaldo"
+            onclick="crearRespaldo()">
+
+            💾 Crear respaldo
+
+        </button>
+
+
+        <button
+            class="btn-respaldo"
+            onclick="restaurarRespaldo()">
+
+            📥 Restaurar respaldo
+
+        </button>
+
+
+        <button
+            class="btn-borrar"
+            onclick="borrarTodo()">
+
+            🗑️ Borrar todo
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+/* =================================
+   VARIABLES
+================================= */
+
+let movimientos = [];
+
+let movimientoEditando = null;
+
+
+/* =================================
+   CARGAR DATOS
+================================= */
+
+function cargarDatos() {
+
+    try {
+
+        const datos =
+            localStorage.getItem(
+                "MI_CONTROL_FINANCIERO"
+            );
+
+        if (datos) {
+
+            movimientos =
+                JSON.parse(datos);
+
+        }
+
+    }
+
+    catch(error) {
+
+        movimientos = [];
+
+        console.log(error);
+
+    }
+
+}
+
+
+/* =================================
+   GUARDAR DATOS
+================================= */
+
+function guardarDatos() {
+
+    try {
+
+        localStorage.setItem(
+            "MI_CONTROL_FINANCIERO",
+            JSON.stringify(
+                movimientos
+            )
+        );
+
+        return true;
+
+    }
+
+    catch(error) {
+
+        mostrarMensaje(
+            "No se pudieron guardar los datos en este navegador.",
+            false
+        );
+
+        console.log(error);
+
+        return false;
+
+    }
+
+}
+
+
+/* =================================
+   FORMATO DINERO
+================================= */
+
+function dinero(valor) {
+
+    return new Intl.NumberFormat(
+        "es-CO",
+        {
+            style: "currency",
+            currency: "COP",
+            maximumFractionDigits: 0
+        }
+    ).format(valor);
+
+}
+
+
+/* =================================
+   FECHA ACTUAL
+================================= */
+
+function fechaActual() {
+
+    const ahora =
+        new Date();
+
+    const año =
+        ahora.getFullYear();
+
+    const mes =
+        String(
+            ahora.getMonth() + 1
+        ).padStart(2,"0");
+
+    const dia =
+        String(
+            ahora.getDate()
+        ).padStart(2,"0");
+
+    const hora =
+        String(
+            ahora.getHours()
+        ).padStart(2,"0");
+
+    const minutos =
+        String(
+            ahora.getMinutes()
+        ).padStart(2,"0");
+
+    return (
+        año +
+        "-" +
+        mes +
+        "-" +
+        dia +
+        "T" +
+        hora +
+        ":" +
+        minutos
+    );
+
+}
+
+
+/* =================================
+   GUARDAR MOVIMIENTO
+================================= */
+
+function guardarMovimiento() {
+
+
+    const tipo =
+        document
+        .getElementById("tipo")
+        .value;
+
+
+    const categoria =
+        document
+        .getElementById("categoria")
+        .value;
+
+
+    const valor =
+        Number(
+            document
+            .getElementById("valor")
+            .value
+        );
+
+
+    const descripcion =
+        document
+        .getElementById("descripcion")
+        .value
+        .trim();
+
+
+    const fecha =
+        document
+        .getElementById("fecha")
+        .value;
+
+
+    /* VALIDACIÓN */
+
+    if (!tipo) {
+
+        mostrarMensaje(
+            "Selecciona el tipo de movimiento.",
+            false
+        );
+
+        return;
+
+    }
+
+
+    if (!categoria) {
+
+        mostrarMensaje(
+            "Selecciona una categoría.",
+            false
+        );
+
+        return;
+
+    }
+
+
+    if (!valor || valor <= 0) {
+
+        mostrarMensaje(
+            "Escribe un valor válido.",
+            false
+        );
+
+        return;
+
+    }
+
+
+    if (!descripcion) {
+
+        mostrarMensaje(
+            "Escribe una descripción.",
+            false
+        );
+
+        return;
+
+    }
+
+
+    if (!fecha) {
+
+        mostrarMensaje(
+            "Selecciona una fecha.",
+            false
+        );
+
+        return;
+
+    }
+
+
+    /* EDITAR */
+
+    if (movimientoEditando !== null) {
+
+        const indice =
+            movimientos.findIndex(
+                function(m) {
+
+                    return m.id ===
+                        movimientoEditando;
+
+                }
+            );
+
+
+        if (indice !== -1) {
+
+            movimientos[indice] = {
+
+                id:
+                    movimientoEditando,
+
+                tipo:
+                    tipo,
+
+                categoria:
+                    categoria,
+
+                valor:
+                    valor,
+
+                descripcion:
+                    descripcion,
+
+                fecha:
+                    fecha
+
+            };
+
+        }
+
+
+        movimientoEditando =
+            null;
+
+
+        document
+        .getElementById(
+            "tituloFormulario"
+        )
+        .textContent =
+            "➕ Registrar movimiento";
+
+
+    }
+
+    /* NUEVO */
+
+    else {
+
+        const nuevoMovimiento = {
+
+            id:
+                Date.now(),
+
+            tipo:
+                tipo,
+
+            categoria:
+                categoria,
+
+            valor:
+                valor,
+
+            descripcion:
+                descripcion,
+
+            fecha:
+                fecha
+
+        };
+
+
+        movimientos.push(
+            nuevoMovimiento
+        );
+
+    }
+
+
+    /* GUARDAR */
+
+    const guardado =
+        guardarDatos();
+
+
+    if (!guardado) {
+
+        return;
+
+    }
+
+
+    /* ACTUALIZAR TODO */
+
+    actualizarResumen();
+
+    mostrarHistorial();
+
+    actualizarMeta();
+
+
+    /* MENSAJE */
+
+    mostrarMensaje(
+
+        "✓ Movimiento guardado correctamente: " +
+        tipo +
+        " de " +
+        dinero(valor),
+
+        true
+
+    );
+
+
+    /* LIMPIAR */
+
+    limpiarFormulario();
+
+}
+
+
+/* =================================
+   LIMPIAR
+================================= */
+
+function limpiarFormulario() {
+
+    document
+    .getElementById("tipo")
+    .value = "";
+
+
+    document
+    .getElementById("categoria")
+    .value = "";
+
+
+    document
+    .getElementById("valor")
+    .value = "";
+
+
+    document
+    .getElementById("descripcion")
+    .value = "";
+
+
+    document
+    .getElementById("fecha")
+    .value =
+        fechaActual();
+
+}
+
+
+/* =================================
+   MENSAJE
+================================= */
+
+function mostrarMensaje(
+    texto,
+    exito
+) {
+
+    const mensaje =
+        document
+        .getElementById("mensaje");
+
+
+    mensaje.textContent =
+        texto;
+
+
+    mensaje.className =
+        exito
+        ? "mensaje exito"
+        : "mensaje error";
+
+
+    setTimeout(
+        function() {
+
+            mensaje.className =
+                "mensaje";
+
+        },
+        4000
+    );
+
+}
+
+
+/* =================================
+   RESUMEN
+================================= */
+
+function actualizarResumen() {
+
+    let ingresos = 0;
+
+    let gastos = 0;
+
+    let ahorros = 0;
+
+
+    movimientos.forEach(
+        function(m) {
+
+            if (
+                m.tipo ===
+                "Ingreso"
+            ) {
+
+                ingresos +=
+                    Number(m.valor);
+
+            }
+
+
+            if (
+                m.tipo ===
+                "Gasto"
+            ) {
+
+                gastos +=
+                    Number(m.valor);
+
+            }
+
+
+            if (
+                m.tipo ===
+                "Ahorro"
+            ) {
+
+                ahorros +=
+                    Number(m.valor);
+
+            }
+
+        }
+    );
+
+
+    const disponible =
+        ingresos -
+        gastos -
+        ahorros;
+
+
+    document
+    .getElementById(
+        "totalIngresos"
+    )
+    .textContent =
+        dinero(ingresos);
+
+
+    document
+    .getElementById(
+        "totalGastos"
+    )
+    .textContent =
+        dinero(gastos);
+
+
+    document
+    .getElementById(
+        "totalAhorros"
+    )
+    .textContent =
+        dinero(ahorros);
+
+
+    document
+    .getElementById(
+        "totalDisponible"
+    )
+    .textContent =
+        dinero(disponible);
+
+}
+
+
+/* =================================
+   HISTORIAL
+================================= */
+
+function mostrarHistorial() {
+
+    const tabla =
+        document
+        .getElementById(
+            "historial"
+        );
+
+
+    const buscar =
+        document
+        .getElementById(
+            "buscar"
+        )
+        .value
+        .toLowerCase();
+
+
+    const filtroTipo =
+        document
+        .getElementById(
+            "filtroTipo"
+        )
+        .value;
+
+
+    const desde =
+        document
+        .getElementById(
+            "desde"
+        )
+        .value;
+
+
+    const hasta =
+        document
+        .getElementById(
+            "hasta"
+        )
+        .value;
+
+
+    let lista =
+        movimientos.filter(
+            function(m) {
+
+
+                const texto =
+                    (
+                        m.descripcion +
+                        " " +
+                        m.categoria +
+                        " " +
+                        m.tipo
+                    )
+                    .toLowerCase();
+
+
+                const coincideTexto =
+                    texto.includes(
+                        buscar
+                    );
+
+
+                const coincideTipo =
+                    !filtroTipo ||
+                    m.tipo ===
+                    filtroTipo;
+
+
+                const fecha =
+                    m.fecha.substring(
+                        0,
+                        10
+                    );
+
+
+                const coincideDesde =
+                    !desde ||
+                    fecha >= desde;
+
+
+                const coincideHasta =
+                    !hasta ||
+                    fecha <= hasta;
+
+
+                return (
+                    coincideTexto &&
+                    coincideTipo &&
+                    coincideDesde &&
+                    coincideHasta
+                );
+
+            }
+        );
+
+
+    /* MÁS RECIENTE PRIMERO */
+
+    lista.sort(
+        function(a,b) {
+
+            return new Date(b.fecha)
+                -
+                new Date(a.fecha);
+
+        }
+    );
+
+
+    if (lista.length === 0) {
+
+        tabla.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    class="sin-datos">
+
+                    Todavía no hay
+                    movimientos registrados.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tabla.innerHTML =
+        lista.map(
+            function(m) {
+
+
+                const fechaObjeto =
+                    new Date(
+                        m.fecha
+                    );
+
+
+                const fecha =
+                    fechaObjeto
+                    .toLocaleDateString(
+                        "es-CO"
+                    );
+
+
+                const hora =
+                    fechaObjeto
+                    .toLocaleTimeString(
+                        "es-CO",
+                        {
+                            hour:
+                                "2-digit",
+
+                            minute:
+                                "2-digit"
+                        }
+                    );
+
+
+                let claseTipo = "";
+
+                let claseValor = "";
+
+
+                if (
+                    m.tipo ===
+                    "Ingreso"
+                ) {
+
+                    claseTipo =
+                        "ingreso";
+
+                    claseValor =
+                        "valor-ingreso";
+
+                }
+
+
+                else if (
+                    m.tipo ===
+                    "Gasto"
+                ) {
+
+                    claseTipo =
+                        "gasto";
+
+                    claseValor =
+                        "valor-gasto";
+
+                }
+
+
+                else {
+
+                    claseTipo =
+                        "ahorro";
+
+                    claseValor =
+                        "valor-ahorro";
+
+                }
+
+
+                return `
+
+                    <tr>
+
+                        <td>
+                            ${fecha}
+                        </td>
+
+                        <td>
+                            ${hora}
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="tipo ${claseTipo}">
+
+                                ${m.tipo}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+                            ${m.categoria}
+                        </td>
+
+                        <td>
+                            ${m.descripcion}
+                        </td>
+
+                        <td
+                            class="${claseValor}">
+
+                            ${dinero(m.valor)}
+
+                        </td>
+
+                        <td>
+
+                            <div
+                                class="acciones">
+
+                                <button
+                                    class="btn-editar"
+                                    onclick="
+                                    editarMovimiento(${m.id})
+                                    ">
+
+                                    ✏️
+
+                                </button>
+
+
+                                <button
+                                    class="btn-eliminar"
+                                    onclick="
+                                    eliminarMovimiento(${m.id})
+                                    ">
+
+                                    🗑️
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+/* =================================
+   EDITAR
+================================= */
+
+function editarMovimiento(id) {
+
+    const movimiento =
+        movimientos.find(
+            function(m) {
+
+                return m.id === id;
+
+            }
+        );
+
+
+    if (!movimiento) {
+
+        return;
+
+    }
+
+
+    document
+    .getElementById("tipo")
+    .value =
+        movimiento.tipo;
+
+
+    document
+    .getElementById("categoria")
+    .value =
+        movimiento.categoria;
+
+
+    document
+    .getElementById("valor")
+    .value =
+        movimiento.valor;
+
+
+    document
+    .getElementById("descripcion")
+    .value =
+        movimiento.descripcion;
+
+
+    document
+    .getElementById("fecha")
+    .value =
+        movimiento.fecha;
+
+
+    movimientoEditando =
+        id;
+
+
+    document
+    .getElementById(
+        "tituloFormulario"
+    )
+    .textContent =
+        "✏️ Editar movimiento";
+
+
+    window.scrollTo(
+        {
+            top: 0,
+            behavior: "smooth"
+        }
+    );
+
+}
+
+
+/* =================================
+   ELIMINAR
+================================= */
+
+function eliminarMovimiento(id) {
+
+    const confirmar =
+        confirm(
+            "¿Quieres eliminar este movimiento?"
+        );
+
+
+    if (!confirmar) {
+
+        return;
+
+    }
+
+
+    movimientos =
+        movimientos.filter(
+            function(m) {
+
+                return m.id !== id;
+
+            }
+        );
+
+
+    guardarDatos();
+
+    actualizarResumen();
+
+    mostrarHistorial();
+
+    actualizarMeta();
+
+}
+
+
+/* =================================
+   META
+================================= */
+
+function guardarMeta() {
+
+    const meta =
+        Number(
+            document
+            .getElementById(
+                "metaAhorro"
+            )
+            .value
+        );
+
+
+    if (meta < 0) {
+
+        return;
+
+    }
+
+
+    localStorage.setItem(
+        "META_AHORRO",
+        meta
+    );
+
+
+    actualizarMeta();
+
+
+    mostrarMensaje(
+        "✓ Meta de ahorro guardada.",
+        true
+    );
+
+}
+
+
+function actualizarMeta() {
+
+    const meta =
+        Number(
+            localStorage.getItem(
+                "META_AHORRO"
+            )
+        ) || 0;
+
+
+    document
+    .getElementById(
+        "metaAhorro"
+    )
+    .value =
+        meta || "";
+
+
+    let ahorros = 0;
+
+
+    movimientos.forEach(
+        function(m) {
+
+            if (
+                m.tipo ===
+                "Ahorro"
+            ) {
+
+                ahorros +=
+                    Number(m.valor);
+
+            }
+
+        }
+    );
+
+
+    document
+    .getElementById(
+        "textoMeta"
+    )
+    .textContent =
+        "Ahorro: " +
+        dinero(ahorros) +
+        " de " +
+        dinero(meta);
+
+
+    let porcentaje = 0;
+
+
+    if (meta > 0) {
+
+        porcentaje =
+            (ahorros / meta) * 100;
+
+        porcentaje =
+            Math.min(
+                porcentaje,
+                100
+            );
+
+    }
+
+
+    document
+    .getElementById(
+        "barraProgreso"
+    )
+    .style.width =
+        porcentaje + "%";
+
+}
+
+
+/* =================================
+   EXPORTAR CSV
+================================= */
+
+function exportarCSV() {
+
+    if (
+        movimientos.length === 0
+    ) {
+
+        alert(
+            "No hay movimientos para exportar."
+        );
+
+        return;
+
+    }
+
+
+    let csv =
+        "Fecha,Hora,Tipo,Categoria,Descripcion,Valor\n";
+
+
+    movimientos.forEach(
+        function(m) {
+
+            const fecha =
+                new Date(
+                    m.fecha
+                );
+
+
+            csv +=
+                '"' +
+                fecha.toLocaleDateString(
+                    "es-CO"
+                ) +
+                '",' +
+
+                '"' +
+                fecha.toLocaleTimeString(
+                    "es-CO"
+                ) +
+                '",' +
+
+                '"' +
+                m.tipo +
+                '",' +
+
+                '"' +
+                m.categoria +
+                '",' +
+
+                '"' +
+                m.descripcion
+                    .replace(/"/g,'""') +
+                '",' +
+
+                '"' +
+                m.valor +
+                '"\n';
+
+        }
+    );
+
+
+    const archivo =
+        new Blob(
+            [
+                "\ufeff" +
+                csv
+            ],
+            {
+                type:
+                    "text/csv;charset=utf-8"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            archivo
+        );
+
+
+    const enlace =
+        document.createElement(
+            "a"
+        );
+
+
+    enlace.href =
+        url;
+
+
+    enlace.download =
+        "control_financiero.csv";
+
+
+    document.body.appendChild(
+        enlace
+    );
+
+
+    enlace.click();
+
+
+    enlace.remove();
+
+
+    URL.revokeObjectURL(
+        url
+    );
+
+}
+
+
+/* =================================
+   RESPALDO
+================================= */
+
+function crearRespaldo() {
+
+    const respaldo = {
+
+        movimientos:
+            movimientos,
+
+        meta:
+            localStorage.getItem(
+                "META_AHORRO"
+            )
+
+    };
+
+
+    const archivo =
+        new Blob(
+            [
+                JSON.stringify(
+                    respaldo,
+                    null,
+                    2
+                )
+            ],
+            {
+                type:
+                    "application/json"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            archivo
+        );
+
+
+    const enlace =
+        document.createElement(
+            "a"
+        );
+
+
+    enlace.href =
+        url;
+
+
+    enlace.download =
+        "respaldo_financiero.json";
+
+
+    document.body.appendChild(
+        enlace
+    );
+
+
+    enlace.click();
+
+
+    enlace.remove();
+
+
+    URL.revokeObjectURL(
+        url
+    );
+
+}
+
+
+/* =================================
+   RESTAURAR
+================================= */
+
+function restaurarRespaldo() {
+
+    const input =
+        document.createElement(
+            "input"
+        );
+
+
+    input.type =
+        "file";
+
+
+    input.accept =
+        ".json";
+
+
+    input.onchange =
+        function(event) {
+
+
+            const archivo =
+                event.target.files[0];
+
+
+            if (!archivo) {
+
+                return;
+
+            }
+
+
+            const lector =
+                new FileReader();
+
+
+            lector.onload =
+                function(e) {
+
+                    try {
+
+                        const datos =
+                            JSON.parse(
+                                e.target.result
+                            );
+
+
+                        movimientos =
+                            datos.movimientos
+                            || [];
+
+
+                        guardarDatos();
+
+
+                        if (
+                            datos.meta
+                        ) {
+
+                            localStorage.setItem(
+                                "META_AHORRO",
+                                datos.meta
+                            );
+
+                        }
+
+
+                        actualizarResumen();
+
+                        mostrarHistorial();
+
+                        actualizarMeta();
+
+
+                        mostrarMensaje(
+                            "✓ Respaldo restaurado correctamente.",
+                            true
+                        );
+
+
+                    }
+
+                    catch(error) {
+
+                        alert(
+                            "El archivo no es válido."
+                        );
+
+                    }
+
+                };
+
+
+            lector.readAsText(
+                archivo
+            );
+
+        };
+
+
+    input.click();
+
+}
+
+
+/* =================================
+   BORRAR TODO
+================================= */
+
+function borrarTodo() {
+
+    if (
+        movimientos.length === 0
+    ) {
+
+        alert(
+            "No hay movimientos para borrar."
+        );
+
+        return;
+
+    }
+
+
+    const confirmar =
+        confirm(
+            "⚠️ Se eliminarán todos los movimientos. ¿Continuar?"
+        );
+
+
+    if (!confirmar) {
+
+        return;
+
+    }
+
+
+    movimientos = [];
+
+
+    localStorage.removeItem(
+        "MI_CONTROL_FINANCIERO"
+    );
+
+
+    actualizarResumen();
+
+    mostrarHistorial();
+
+    actualizarMeta();
+
+
+    mostrarMensaje(
+        "Todos los movimientos fueron eliminados.",
+        true
+    );
+
+}
+
+
+/* =================================
+   INICIAR
+================================= */
+
+cargarDatos();
+
+
+document
+.getElementById("fecha")
+.value =
+    fechaActual();
+
+
+actualizarResumen();
+
+mostrarHistorial();
+
+actualizarMeta();
+
+
+</script>
+
+</body>
+
+</html>
